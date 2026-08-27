@@ -1,0 +1,27 @@
+GET http://localhost:5005/authors
+
+###
+
+GET http://localhost:5005/authors/5
+
+###
+
+POST http://localhost:5005/authors
+Content-Type: application/json
+
+{
+  "Name": "Johnny Johnson"
+}
+
+###
+
+PUT http://localhost:5005/authors/2
+Content-Type: application/json
+
+{
+  "Name": "Harry Potter"
+}
+
+###
+
+DELETE http://localhost:5005/authors/1
