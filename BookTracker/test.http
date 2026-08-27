@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5005/authors/1
+DELETE http://localhost:5005/authors/5
 
 ###
 
@@ -40,7 +40,7 @@ POST http://localhost:5005/genres
 Content-Type: application/json
 
 {
-  "Name": "History"
+  "Name": "Sci-Fi"
 }
 
 ###
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5005/genres/11
+DELETE http://localhost:5005/genres/13
 
 ###
 
@@ -72,18 +72,18 @@ Content-Type: application/json
 {
   "Title": "Harry Potter",
   "Author": "J.K. Rolling",
-  "GenreId": 2
+  "GenreId": 13
 }
 
 ###
 
-PUT http://localhost:5005/books/2
+PUT http://localhost:5005/books/7
 Content-Type: application/json
 
 {
   "Title": "Star Wars",
   "Author": "George Lucas",
-  "GenreId": 5
+  "GenreId": 14
 }
 
 ###

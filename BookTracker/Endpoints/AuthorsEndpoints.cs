@@ -76,6 +76,17 @@ public static class AuthorsEndpoints
             
             =>
         {
+            
+            var hasLinkedBooks = await dbContext.Books.AnyAsync(b => b.AuthorId == id);
+
+            if (hasLinkedBooks)
+            {
+                return Results.BadRequest(
+                    "[Error]: A book or more have link with this author" +
+                    " Delete linked books before trying again."
+                    );
+            }
+            
             await dbContext.Authors
                 .Where(author => author.Id == id)
                 .ExecuteDeleteAsync();

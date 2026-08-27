@@ -81,6 +81,16 @@ public static class GenresEndpoints
         group.MapDelete("/{id}", async (int id, BookTrackerContext dbContext)
             =>
             {
+                
+                var hasLinkedBooks = await dbContext.Books.AnyAsync(b => b.GenreId == id);
+
+                if (hasLinkedBooks)
+                {
+                    return Results.BadRequest( 
+                        "[Error]: A book or more have link with this genre" +
+                             " Delete linked books before trying again.");
+                }
+                
                 await dbContext.Genres
                     .Where(genre => genre.Id == id)
                     .ExecuteDeleteAsync();
