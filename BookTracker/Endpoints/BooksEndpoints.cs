@@ -8,6 +8,5 @@ public static class BooksEndpoints
         var group = app.MapGroup("/books");
         
         
-        
     }
 }

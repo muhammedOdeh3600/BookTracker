@@ -13,6 +13,7 @@ var app = builder.Build();
 //app.MapGet("/", () => "Hello World!");
 
 app.MapAuthorsEndpoint();
+app.MapGenresEndpoint();
 app.MapBooksEndpoint();
 app.MigrateDb();
 

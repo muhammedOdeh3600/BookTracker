@@ -25,3 +25,33 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:5005/authors/1
+
+###
+
+GET http://localhost:5005/genres
+
+###
+
+GET http://localhost:5005/genres/11
+
+###
+
+POST http://localhost:5005/genres
+Content-Type: application/json
+
+{
+  "Name": "History"
+}
+
+###
+
+PUT http://localhost:5005/genres/11
+Content-Type: application/json
+
+{
+  "Name": "TEST"
+}
+
+###
+
+DELETE http://localhost:5005/genres/11
