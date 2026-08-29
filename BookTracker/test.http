@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5005/authors/5
+DELETE http://localhost:5005/authors/3
 
 ###
 
@@ -70,7 +70,7 @@ POST http://localhost:5005/books
 Content-Type: application/json
 
 {
-  "Title": "Harry Potter",
+  "Title": "Harry Potter 2",
   "Author": "J.K. Rolling",
   "GenreId": 13
 }
@@ -88,4 +88,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5005/books/3
+DELETE http://localhost:5005/books/14

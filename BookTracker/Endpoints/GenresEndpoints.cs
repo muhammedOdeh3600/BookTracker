@@ -87,7 +87,7 @@ public static class GenresEndpoints
                 if (hasLinkedBooks)
                 {
                     return Results.BadRequest( 
-                        "[Error]: A book or more have link with this genre" +
+                        "[Error]: A book or more have link with this genre." +
                              " Delete linked books before trying again.");
                 }
                 

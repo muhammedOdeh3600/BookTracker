@@ -110,10 +110,20 @@ public static class BooksEndpoints
         group.MapDelete("/{id}", async (int id, BookTrackerContext dbContext)
                 =>
             {
-                
-                //var authorHasOtherBooks = await dbContext.Authors.
+                var book = await dbContext.Books.FindAsync(id);
+
+                var authorId = book.AuthorId;
                 
                 await dbContext.Books.Where(b => b.Id == id).ExecuteDeleteAsync();
+                
+                var authorHasOtherBooks = await dbContext.Books
+                    .AnyAsync(a => a.AuthorId == authorId);
+
+                if (!authorHasOtherBooks)
+                {
+                    await dbContext.Authors.Where(a => a.Id == authorId).ExecuteDeleteAsync();
+                }
+                
                 return Results.NoContent();
             }
             
