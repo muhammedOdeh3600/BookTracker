@@ -1,11 +1,13 @@
 using BookTracker.Data;
 using BookTracker.Endpoints;
+using BookTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidation();
-builder.AddBookTrackerDb();
+builder.Services.AddScoped<BookService>();
 
+builder.AddBookTrackerDb();
 
 var app = builder.Build();
 

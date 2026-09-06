@@ -62,7 +62,7 @@ GET http://localhost:5005/books
 
 ###
 
-GET http://localhost:5005/books/2
+GET http://localhost:5005/books/16
 
 ###
 
@@ -70,7 +70,7 @@ POST http://localhost:5005/books
 Content-Type: application/json
 
 {
-  "Title": "Harry Potter 2",
+  "Title": "Harry Potter 3",
   "Author": "J.K. Rolling",
   "GenreId": 13
 }
