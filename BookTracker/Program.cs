@@ -4,9 +4,7 @@ using BookTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddValidation();
-builder.Services.AddScoped<BookService>();
-
+builder.AddMyServices();
 builder.AddBookTrackerDb();
 
 var app = builder.Build();

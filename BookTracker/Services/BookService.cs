@@ -92,6 +92,8 @@ public class BookService
     {
         var book = await _dbContext.Books.FindAsync(id);
 
+        if (book is null) return;
+        
         var authorId = book.AuthorId;
                 
         await _dbContext.Books.Where(b => b.Id == id).ExecuteDeleteAsync();

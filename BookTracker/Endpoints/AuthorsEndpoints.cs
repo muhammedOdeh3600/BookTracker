@@ -1,7 +1,5 @@
-using BookTracker.Data;
 using BookTracker.Dtos;
-using BookTracker.Models;
-using Microsoft.EntityFrameworkCore;
+using BookTracker.Services;
 
 namespace BookTracker.Endpoints;
 
@@ -15,16 +13,17 @@ public static class AuthorsEndpoints
         var group = app.MapGroup("/authors");
         
         // GET
-        group.MapGet("/", async (BookTrackerContext dbContext) => 
-            await dbContext.Authors
-                        .Select(author => new AuthorDto(author.Id, author.Name))
-                        .AsNoTracking()
-                        .ToListAsync()
+        group.MapGet("/", async (AuthorService authorService) =>
+            {
+                var authors = await authorService.GetAllAuthorsAsync();
+                Results.Ok(authors);
+            }
+            
         );
 
-        group.MapGet("/{id}", async (int id, BookTrackerContext dbContext) =>
-            {
-                var author = await dbContext.Authors.FindAsync(id);
+        group.MapGet("/{id}", async (int id, AuthorService authorService) =>
+                {
+                var author = await authorService.GetAuthorByIdAsync(id);
                 return author is null
                     ? Results.NotFound()
                     : Results.Ok(
@@ -37,60 +36,38 @@ public static class AuthorsEndpoints
         
         
         // POST
-        group.MapPost("/", async (CreateAuthorDto newAuthor, BookTrackerContext dbContext) =>
+        group.MapPost("/", async (CreateAuthorDto newAuthor, AuthorService authorService) =>
             {
-                Author author = new()
-                {
-                    Name = newAuthor.Name
-                    
-                };
-                dbContext.Authors.Add(author);
-                await dbContext.SaveChangesAsync();
-
-                AuthorDto authorDto = new AuthorDto(author.Id, author.Name);
                 
+                var authorDto = await authorService.CreateAuthorAsync(newAuthor);
                 return Results.CreatedAtRoute(GetAuthorEndpoint, new {id = authorDto.Id},authorDto);
 
             }
         );
         
         //PUT
-        group.MapPut("/{id}", async (int id, UpdateAuthorDto updatedAuthorDto, BookTrackerContext dbContext) =>
+        group.MapPut("/{id}", async (int id, UpdateAuthorDto updatedAuthorDto, AuthorService authorService) =>
         {
-            var author = await dbContext.Authors.FindAsync(id);
+            var updated = await authorService.UpdateAuthorAsync(id, updatedAuthorDto);
 
-            if (author is null)
-            {
-                return Results.NotFound();
-            }
-            
-            author.Name = updatedAuthorDto.Name;
-            
-            await dbContext.SaveChangesAsync();
-            
-            return Results.NoContent();
+            return updated
+                ? Results.NoContent()
+                : Results.NotFound();
         });
         
         // DELETE
-        group.MapDelete("/{id}", async (int id, BookTrackerContext dbContext)
+        group.MapDelete("/{id}", async (int id, AuthorService authorService)
             
             =>
         {
+            var deleted =  await authorService.DeleteAuthorAsync(id);
             
-            var hasLinkedBooks = await dbContext.Books.AnyAsync(b => b.AuthorId == id);
-
-            if (hasLinkedBooks)
-            {
-                return Results.BadRequest(
-                    "[Error]: A book or more have link with this author" +
-                    " Delete linked books before trying again."
+            return deleted
+                ? Results.NoContent()
+                : Results.BadRequest(
+                        "[Error]: A book or more have link with this author." +
+                        " Delete linked books before trying again.."
                     );
-            }
-            
-            await dbContext.Authors
-                .Where(author => author.Id == id)
-                .ExecuteDeleteAsync();
-            return Results.NoContent(); 
         });
 
     }

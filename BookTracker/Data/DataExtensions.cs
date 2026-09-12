@@ -1,4 +1,5 @@
 using BookTracker.Models;
+using BookTracker.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookTracker.Data;
@@ -45,5 +46,14 @@ public static class DataExtensions
             })
         );
     }
-    
+
+
+    public static void AddMyServices(this WebApplicationBuilder builder)
+    {
+        
+        builder.Services.AddValidation();
+        builder.Services.AddScoped<BookService>();
+        builder.Services.AddScoped<AuthorService>();
+        
+    }
 }
